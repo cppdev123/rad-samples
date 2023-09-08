@@ -1,0 +1,38 @@
+cmake_minimum_required(VERSION 3.12)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD 20)
+
+project(example-ui)
+
+option(ENABLE_SANITIZER OFF)
+option(ENABLE_DEBUG_REL OFF)
+
+
+set(EXAMPLE_SOURCES
+	"examples/buttons_page.cpp"
+	"examples/form_page.cpp"
+	"examples/increment_btn_page.cpp"
+	"examples/main.cpp"
+	"examples/progress_and_sliders.cpp"
+	"examples/radio_buttons_page.cpp"
+	"examples/tabs_page.cpp"
+	"examples/text_area.cpp"
+	"examples/todo_list.cpp"
+)
+
+
+if (WIN32)
+	add_compile_definitions(NOMINMAX UNICODE _UNICODE)
+endif()
+
+if (ENABLE_SANITIZER)
+	add_compile_options(-fsanitize=address)
+	add_compile_definitions(_DISABLE_VECTOR_ANNOTATION)
+endif()
+
+find_package(rad REQUIRED)
+
+
+add_executable(example-ui ${EXAMPLE_SOURCES})
+target_link_libraries(example-ui rad-ui rad::rad D2d1.lib Dwrite.lib dxguid.lib)
